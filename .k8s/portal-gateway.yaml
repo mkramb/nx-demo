@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portal-gateway
+  labels:
+    app: portal-gateway
+spec:
+  selector:
+    matchLabels:
+      app: portal-gateway
+  template:
+    metadata:
+      labels:
+        app: portal-gateway
+    spec:
+      containers:
+        - name: portal-gateway
+          image: portal-gateway-image
+          ports:
+            - containerPort: 4001
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: portal-gateway
+spec:
+  selector:
+    app: portal-gateway
+  ports:
+    - protocol: TCP
+      port: 4001

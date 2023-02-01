@@ -1,0 +1,38 @@
+FROM node:lts-bullseye as base
+LABEL layer="base"
+
+WORKDIR /app
+COPY nx.json .
+COPY package.json .
+COPY tsconfig.base.json .
+COPY yarn.lock .
+RUN yarn install
+
+FROM base as build
+LABEL layer="src"
+
+ARG service_name
+
+WORKDIR /app
+COPY ./libs/backend ./libs/backend
+COPY ./apps/backend/${service_name} ./apps/backend/${service_name}
+RUN yarn nx build ${service_name}
+
+FROM build as install
+LABEL layer="install"
+
+WORKDIR /app/dist/apps/backend/${service_name}
+RUN yarn install
+
+FROM node:alpine as dist
+LABEL layer="dist"
+
+ARG service_name
+ARG node_env=production
+ENV NODE_ENV $node_env
+
+WORKDIR /dist/${service_name}
+COPY --from=install /app/dist/apps/backend/${service_name}/node_modules ./node_modules
+COPY --from=install /app/dist/apps/backend/${service_name} .
+
+CMD ["node", "./main.js"]

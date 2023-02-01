@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ledger
+  labels:
+    app: ledger
+spec:
+  selector:
+    matchLabels:
+      app: ledger
+  template:
+    metadata:
+      labels:
+        app: ledger
+    spec:
+      containers:
+        - name: ledger
+          image: ledger-image
+          ports:
+            - containerPort: 4001
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ledger
+spec:
+  selector:
+    app: ledger
+  ports:
+    - protocol: TCP
+      port: 4001

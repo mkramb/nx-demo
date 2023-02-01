@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: another-web
+  labels:
+    app: another-web
+spec:
+  selector:
+    matchLabels:
+      app: another-web
+  template:
+    metadata:
+      labels:
+        app: another-web
+    spec:
+      containers:
+        - name: another-web
+          image: another-web-image
+          ports:
+            - containerPort: 4001
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: another-web
+spec:
+  selector:
+    app: another-web
+  ports:
+    - protocol: TCP
+      port: 4001

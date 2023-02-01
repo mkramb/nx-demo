@@ -1,0 +1,26 @@
+{
+  "name": "backend-portal-contracts",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/portal-contracts/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/backend/portal-contracts",
+        "main": "libs/backend/portal-contracts/src/index.ts",
+        "tsConfig": "libs/backend/portal-contracts/tsconfig.lib.json",
+        "assets": ["libs/backend/portal-contracts/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/backend/portal-contracts/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
